@@ -9,7 +9,7 @@ import org.springframework.jdbc.core.JdbcTemplate;
 
 import javax.sql.DataSource;
 
-// This class is an example for a Tasklet that executes a unique task
+// This class is an example for a Tasklet that executes a JDBC task
 @Slf4j
 public class RemoveDuplicateData implements Tasklet {
 
