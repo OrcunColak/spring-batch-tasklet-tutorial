@@ -11,14 +11,20 @@ import org.springframework.batch.core.scope.context.ChunkContext;
 import org.springframework.batch.core.step.builder.StepBuilder;
 import org.springframework.batch.core.step.tasklet.Tasklet;
 import org.springframework.batch.repeat.RepeatStatus;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.transaction.PlatformTransactionManager;
+
+import javax.sql.DataSource;
 
 @Configuration
 @RequiredArgsConstructor
 @Slf4j
 public class BatchConfig {
+
+    @Autowired
+    private final DataSource dataSource;
 
     // Create a job with two steps
     // Each step is a tasklet
@@ -27,7 +33,8 @@ public class BatchConfig {
         return new JobBuilder("job1", jobRepository)
                 .preventRestart()
                 .start(step1(jobRepository, transactionManager))
-                .next(step2(jobRepository, transactionManager))
+                .next(removeDuplicateDataStep(jobRepository,transactionManager))
+                .next(exceptionStep(jobRepository, transactionManager))
                 .build();
     }
 
@@ -45,8 +52,7 @@ public class BatchConfig {
     }
 
     @Bean
-    Step step2(JobRepository jobRepository, PlatformTransactionManager transactionManager) {
-
+    Step exceptionStep(JobRepository jobRepository, PlatformTransactionManager transactionManager) {
         return new StepBuilder("step_two", jobRepository)
                 .tasklet(new Tasklet() {
                     @Override
@@ -59,6 +65,13 @@ public class BatchConfig {
                         return RepeatStatus.FINISHED;
                     }
                 }, transactionManager)
+                .build();
+    }
+
+    @Bean
+    Step removeDuplicateDataStep(JobRepository jobRepository, PlatformTransactionManager platformTransactionManager) {
+        return new StepBuilder("removeDuplicateDataStep", jobRepository)
+                .tasklet(new RemoveDuplicateData(dataSource), platformTransactionManager)
                 .build();
     }
 }

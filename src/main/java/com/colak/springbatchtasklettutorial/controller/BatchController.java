@@ -17,7 +17,7 @@ public class BatchController {
 
     private final Job job;
 
-    // http:localhost:8080/job/test1
+    // http://localhost:8080/job/test1
     @GetMapping("/job/{param}")
     public void startJob1(@PathVariable("param") String param) throws Exception {
         JobParameters params = new JobParametersBuilder()
