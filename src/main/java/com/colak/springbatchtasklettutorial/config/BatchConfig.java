@@ -20,10 +20,15 @@ import org.springframework.transaction.PlatformTransactionManager;
 @Slf4j
 public class BatchConfig {
 
+    // Create a job with two steps
+    // Each step is a tasklet
     @Bean
     public Job job(JobRepository jobRepository, PlatformTransactionManager transactionManager) {
-        return new JobBuilder("job1", jobRepository).preventRestart().start(step1(jobRepository, transactionManager))
-                .next(step2(jobRepository, transactionManager)).build();
+        return new JobBuilder("job1", jobRepository)
+                .preventRestart()
+                .start(step1(jobRepository, transactionManager))
+                .next(step2(jobRepository, transactionManager))
+                .build();
     }
 
     @Bean
@@ -56,6 +61,4 @@ public class BatchConfig {
                 }, transactionManager)
                 .build();
     }
-
-
 }

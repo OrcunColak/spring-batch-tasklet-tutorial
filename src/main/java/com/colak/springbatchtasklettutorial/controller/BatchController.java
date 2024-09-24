@@ -19,8 +19,10 @@ public class BatchController {
 
     // http:localhost:8080/job/test1
     @GetMapping("/job/{param}")
-    public void startJob1(@PathVariable("param") String param) throws Exception{
-        JobParameters params = new JobParametersBuilder().addString("PARAM",param).toJobParameters();
-        jobLauncher.run(job,params);
+    public void startJob1(@PathVariable("param") String param) throws Exception {
+        JobParameters params = new JobParametersBuilder()
+                .addString("PARAM", param)
+                .toJobParameters();
+        jobLauncher.run(job, params);
     }
 }
