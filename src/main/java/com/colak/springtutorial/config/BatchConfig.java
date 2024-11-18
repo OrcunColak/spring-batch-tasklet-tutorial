@@ -1,4 +1,4 @@
-package com.colak.springbatchtasklettutorial.config;
+package com.colak.springtutorial.config;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -11,7 +11,6 @@ import org.springframework.batch.core.scope.context.ChunkContext;
 import org.springframework.batch.core.step.builder.StepBuilder;
 import org.springframework.batch.core.step.tasklet.Tasklet;
 import org.springframework.batch.repeat.RepeatStatus;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.transaction.PlatformTransactionManager;
@@ -23,7 +22,6 @@ import javax.sql.DataSource;
 @Slf4j
 public class BatchConfig {
 
-    @Autowired
     private final DataSource dataSource;
 
     // Create a job with two steps

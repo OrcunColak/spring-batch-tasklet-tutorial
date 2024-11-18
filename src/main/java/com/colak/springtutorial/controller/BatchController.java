@@ -1,4 +1,4 @@
-package com.colak.springbatchtasklettutorial.controller;
+package com.colak.springtutorial.controller;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.batch.core.Job;
